@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using TestingApp.Models;
 
 namespace TestingApp
 {
@@ -29,6 +31,9 @@ namespace TestingApp
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<MyDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MyDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +60,8 @@ namespace TestingApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            SeedData.Initialize(app.ApplicationServices);
         }
     }
 }

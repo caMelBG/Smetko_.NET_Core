@@ -1,4 +1,3 @@
-
 @{
     ViewData["Title"] = "Index";
 }
@@ -6,3 +5,12 @@
 <h2>Index</h2>
 
 <h5>DateTime: @DateTime.Now.ToString("d MMM yyy hh:MM:ss")</h5>
+
+<ul>
+    @for (int index = 0; index < (ViewData["Numbers"] as int[]).Length; index++)
+    {
+        <li>
+            @((ViewData["Numbers"] as int[])[index] as int?)
+        </li>
+    }
+</ul>
