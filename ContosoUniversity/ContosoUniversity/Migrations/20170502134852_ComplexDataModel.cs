@@ -35,11 +35,11 @@ namespace ContosoUniversity.Migrations
                 oldClrType: typeof(string),
                 oldNullable: true);
 
-            //migrationBuilder.AddColumn<int>(
-            //    name: "DepartmentID",
-            //    table: "Course",
-            //    nullable: false,
-            //    defaultValue: 0);
+            migrationBuilder.AddColumn<int>(
+                name: "DepartmentID",
+                table: "Course",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.CreateTable(
                 name: "Instructor",
@@ -101,19 +101,7 @@ namespace ContosoUniversity.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            //////////////////////////////
-            migrationBuilder.Sql("INSERT INTO dbo.Department (Name, Budget, StartDate) VALUES ('Temp', 0.00, GETDATE())");
-            // Default value for FK points to department created above, with
-            // defaultValue changed to 1 in following AddColumn statement.
-
-            migrationBuilder.AddColumn<int>(
-                name: "DepartmentID",
-                table: "Course",
-                nullable: false,
-                defaultValue: 1);
-            //////////////////////////////
-
+            
             migrationBuilder.CreateTable(
                 name: "OfficeAssignment",
                 columns: table => new
