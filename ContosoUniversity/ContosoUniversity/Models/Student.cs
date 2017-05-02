@@ -14,7 +14,5 @@ namespace ContosoUniversity.Models
         public DateTime EnrollmentDate { get; set; }
 
         public ICollection<Enrollment> Enrollments { get; set; }
-        
-        public string Secret { get; set; }
     }
 }
