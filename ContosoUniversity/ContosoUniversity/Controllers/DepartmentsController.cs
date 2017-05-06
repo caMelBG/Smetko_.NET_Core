@@ -101,15 +101,18 @@ namespace ContosoUniversity.Controllers
                 return NotFound();
             }
 
-            var departmentToUpdate = await _context.Departments.Include(i => i.Administrator).SingleOrDefaultAsync(m => m.DepartmentID == id);
+            var departmentToUpdate = await _context.Departments
+                .Include(i => i.Administrator)
+                .SingleOrDefaultAsync(m => m.DepartmentID == id);
 
             if (departmentToUpdate == null)
             {
-                Department deletedDepartment = new Department();
+                var deletedDepartment = new Department();
                 await TryUpdateModelAsync(deletedDepartment);
                 ModelState.AddModelError(string.Empty,
                     "Unable to save changes. The department was deleted by another user.");
-                ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FullName", deletedDepartment.InstructorID);
+                ViewData["InstructorID"] = new SelectList(
+                    _context.Instructors, "ID", "FullName", deletedDepartment.InstructorID);
                 return View(deletedDepartment);
             }
 
