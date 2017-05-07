@@ -6,7 +6,7 @@ using ToDoApi.Models;
 
 namespace ToDoApi.Controllers
 {
-    [Route("api/[controller]/[action]/[id]")]
+    [Route("api/[controller]")]
     public class ToDoItemsController : Controller
     {
         private readonly IToDoRepository _toDoRepository;
@@ -27,8 +27,8 @@ namespace ToDoApi.Controllers
             return Ok(_toDoRepository.All);
         }
 
-        [HttpPost("{id}")]
-        public IActionResult Create(string id, [FromBody]ToDoItem item)
+        [HttpPost]
+        public IActionResult Create([FromBody]ToDoItem item)
         {
             try
             {
