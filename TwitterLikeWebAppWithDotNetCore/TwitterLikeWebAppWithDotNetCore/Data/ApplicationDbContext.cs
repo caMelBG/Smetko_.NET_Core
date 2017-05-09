@@ -8,7 +8,7 @@ using TwitterLikeWebAppWithDotNetCore.Models;
 
 namespace TwitterLikeWebAppWithDotNetCore.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
