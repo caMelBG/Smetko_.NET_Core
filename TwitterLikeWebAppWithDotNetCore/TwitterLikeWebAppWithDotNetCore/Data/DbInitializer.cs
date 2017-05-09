@@ -6,7 +6,7 @@ namespace TwitterLikeWebAppWithDotNetCore.Data
 {
     public static class DbInitializer
     {
-        public static async void Initialize(ApplicationDbContext context, UserManager<User> userManager)
+        public static async void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             context.Database.EnsureCreated();
 
@@ -32,23 +32,23 @@ namespace TwitterLikeWebAppWithDotNetCore.Data
             }
             await context.SaveChangesAsync();
 
-            var users = new User[]
+            var users = new ApplicationUser[]
             {
-                new User{FirstName="Carson",LastName="Alexander"},
-                new User{FirstName="Meredith",LastName="Alonso"},
-                new User{FirstName="Arturo",LastName="Anand"},
-                new User{FirstName="Gytis",LastName="Barzdukas"},
-                new User{FirstName="Yan",LastName="Li"},
-                new User{FirstName="Peggy",LastName="Justice"},
-                new User{FirstName="Laura",LastName="Norman"},
-                new User{FirstName="Nino",LastName="Olivetto"}
+                new ApplicationUser{FirstName="Carson",LastName="Alexander"},
+                new ApplicationUser{FirstName="Meredith",LastName="Alonso"},
+                new ApplicationUser{FirstName="Arturo",LastName="Anand"},
+                new ApplicationUser{FirstName="Gytis",LastName="Barzdukas"},
+                new ApplicationUser{FirstName="Yan",LastName="Li"},
+                new ApplicationUser{FirstName="Peggy",LastName="Justice"},
+                new ApplicationUser{FirstName="Laura",LastName="Norman"},
+                new ApplicationUser{FirstName="Nino",LastName="Olivetto"}
             };
             foreach (var user in users)
             {
-                user.Tweets = tweets;
-                await userManager.CreateAsync(user, "parola");
+                user.UserName = user.FirstName;
+                user.Email = user.FirstName + "@abv.bg";
+                await userManager.CreateAsync(user, user.FirstName);
             }
-            await context.SaveChangesAsync();
         }
     }
 }

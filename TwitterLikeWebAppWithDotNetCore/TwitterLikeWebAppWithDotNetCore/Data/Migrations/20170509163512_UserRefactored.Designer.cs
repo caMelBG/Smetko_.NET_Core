@@ -8,9 +8,10 @@ using TwitterLikeWebAppWithDotNetCore.Data;
 namespace TwitterLikeWebAppWithDotNetCore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170509163512_UserRefactored")]
+    partial class UserRefactored
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

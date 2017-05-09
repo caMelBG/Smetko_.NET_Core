@@ -8,10 +8,8 @@ namespace TwitterLikeWebAppWithDotNetCore.Models
         [Key]
         public int Id { get; set; }
         
-        public int AuthorId { get; set; }
-
-        public User Author { get; set; }
-
+        public int UserId { get; set; }
+        
         [Required]
         [MinLength(8)]
         [MaxLength(256)]
