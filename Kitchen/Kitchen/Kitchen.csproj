@@ -11,6 +11,39 @@
   <PropertyGroup>
     <UserSecretsId>aspnet-Kitchen-81aed314-9ec7-4f02-80c7-00f75b682b0f</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\build\css\custom.css" />
+    <Content Include="wwwroot\build\css\custom.min.css" />
+    <Content Include="wwwroot\build\images\back_disabled.png" />
+    <Content Include="wwwroot\build\images\back_enabled.png" />
+    <Content Include="wwwroot\build\images\back_enabled_hover.png" />
+    <Content Include="wwwroot\build\images\forward_disabled.png" />
+    <Content Include="wwwroot\build\images\forward_enabled.png" />
+    <Content Include="wwwroot\build\images\forward_enabled_hover.png" />
+    <Content Include="wwwroot\build\images\loading.gif" />
+    <Content Include="wwwroot\build\js\custom.js" />
+    <Content Include="wwwroot\build\js\custom.min.js" />
+    <Content Include="wwwroot\images\american-express.png" />
+    <Content Include="wwwroot\images\banner1.svg" />
+    <Content Include="wwwroot\images\banner2.svg" />
+    <Content Include="wwwroot\images\banner3.svg" />
+    <Content Include="wwwroot\images\banner4.svg" />
+    <Content Include="wwwroot\images\cropper.jpg" />
+    <Content Include="wwwroot\images\img.jpg" />
+    <Content Include="wwwroot\images\inbox.png" />
+    <Content Include="wwwroot\images\mastercard.png" />
+    <Content Include="wwwroot\images\media.jpg" />
+    <Content Include="wwwroot\images\paypal.png" />
+    <Content Include="wwwroot\images\picture.jpg" />
+    <Content Include="wwwroot\images\prod-1.jpg" />
+    <Content Include="wwwroot\images\prod-2.jpg" />
+    <Content Include="wwwroot\images\prod-3.jpg" />
+    <Content Include="wwwroot\images\prod-4.jpg" />
+    <Content Include="wwwroot\images\prod-5.jpg" />
+    <Content Include="wwwroot\images\user.png" />
+    <Content Include="wwwroot\images\visa.png" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
