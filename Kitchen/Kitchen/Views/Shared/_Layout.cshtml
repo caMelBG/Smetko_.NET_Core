@@ -51,7 +51,14 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <h2>@User.Identity.Name</h2>
+                            }
+                            else
+                            {
+                                <h2>Guest</h2>
+                            }
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -64,12 +71,12 @@
                             <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    @if (User.Identity.IsAuthenticated)
+                                    @if (User.IsInRole(Constants.AdminRole) || User.IsInRole(Constants.OperatorRole))
                                     {
                                         <a><i class="fa fa-home"></i> Meals <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
                                             <li><a asp-contoroller="Meals" asp-action="List">List All</a></li>
-                                            <li><a asp-contoroller="Meals" asp-action="Create" method="Get" >Creat New</a></li>
+                                            <li><a asp-contoroller="Meals" asp-action="Create" method="Get">Creat New</a></li>
                                             <li><a asp-contoroller="" asp-action="">Temp</a></li>
                                         </ul>
                                     }
@@ -78,14 +85,14 @@
                                         <a asp-contoroller="Meals" asp-action="List"><i class="fa fa-home"></i> Meals <span class="fa"></span></a>
                                     }
                                 </li>
-                                @if (User.Identity.IsAuthenticated || true)
+                                @if (User.IsInRole(Constants.AdminRole) || User.IsInRole(Constants.OperatorRole))
                                 {
                                     <li>
                                         <a><i class="fa fa-edit"></i> Products <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><a asp-controller="Products" asp-acion="List" >List All</a></li>
+                                            <li><a asp-controller="Products" asp-acion="List">List All</a></li>
                                             <li><a asp-controller="Products" asp-acion="Create" method="Post">Create New</a></li>
-                                            <li><a asp-controller="Products" asp-acion="" >Temp</a></li>
+                                            <li><a asp-controller="Products" asp-acion="">Temp</a></li>
                                         </ul>
                                     </li>
                                     <li>
@@ -123,24 +130,8 @@
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         </div>
 
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <a asp-controller="Account" asp-action="Logout" class="user-profile dropdown-toggle">
-                                    <span class="glyphicon glyphicon-off"></span>
-                                    Log Out
-                                </a>
-                                }
-                                else
-                                {
-                                    <a asp-controller="Account" asp-action="Login" class="user-profile dropdown-toggle">
-                                    <span class="glyphicon glyphicon-circle-arrow-right"></span>
-                                    Log In
-                                </a>
-                                }
-                            </li>
-                        </ul>
+                        @await Html.PartialAsync("_LoginPartial")
+
                     </nav>
                 </div>
             </div>

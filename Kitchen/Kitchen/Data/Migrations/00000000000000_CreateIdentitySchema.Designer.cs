@@ -126,7 +126,7 @@ namespace Kitchen.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Kitchen.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Kitchen.Models.User", b =>
                 {
                     b.Property<string>("Id");
 
@@ -185,7 +185,7 @@ namespace Kitchen.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Kitchen.Models.ApplicationUser")
+                    b.HasOne("Kitchen.Models.User")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -193,7 +193,7 @@ namespace Kitchen.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Kitchen.Models.ApplicationUser")
+                    b.HasOne("Kitchen.Models.User")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -206,7 +206,7 @@ namespace Kitchen.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Kitchen.Models.ApplicationUser")
+                    b.HasOne("Kitchen.Models.User")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
