@@ -16,13 +16,13 @@ namespace Kitchen.Controllers
 
         public MealsController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Meals
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Meals.Include(m => m.Category).ToListAsync());
+            return View(await _context.Meals.Include(m => m.Category).Where(m => m.IsActive == true).ToListAsync());
         }
 
         // GET: Meals/Details/5
@@ -54,7 +54,7 @@ namespace Kitchen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,IsActive,Weight,CategoryId")] Meal meal)
+        public async Task<IActionResult> Create([Bind("Name,Price,Weight,CategoryName")] Meal meal, [Bind("CategoryName", Prefix = "Category")] string test)
         {
             if (ModelState.IsValid)
             {

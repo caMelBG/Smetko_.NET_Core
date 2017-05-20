@@ -69,5 +69,9 @@
   <ItemGroup>
     <None Include="Models\Meal.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\ProductViewModels\" />
+    <Folder Include="Models\OrderViewModels\" />
+  </ItemGroup>
 
 </Project>

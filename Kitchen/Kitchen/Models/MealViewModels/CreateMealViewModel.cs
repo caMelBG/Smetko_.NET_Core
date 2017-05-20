@@ -1,19 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Kitchen.Models
+namespace Kitchen.Models.MealViewModels
 {
-    public class Meal
+    public class CreateMealViewModel
     {
         private ICollection<MealProduct> _products;
 
-        public Meal()
+        public CreateMealViewModel()
         {
-            this.IsActive = true;
             this._products = new HashSet<MealProduct>();
         }
-
-        public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -21,14 +18,11 @@ namespace Kitchen.Models
         [Required]
         public decimal Price { get; set; }
 
-        [Display(Name = "Is active?")]
-        public bool IsActive { get; set; }
-
+        [Required]
         public double Weight { get; set; }
 
-        public int CategoryId { get; set; }
-
-        public Category Category { get; set; }
+        [Display(Name = "Category Name")]
+        public string CategoryName { get; set; }
 
         public ICollection<MealProduct> Products
         {

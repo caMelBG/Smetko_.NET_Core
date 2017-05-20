@@ -19,6 +19,7 @@ namespace Kitchen.Models
 
         public double Quantity { get; set; }
 
+        [Display(Name = "Quantity Type")]
         public QuantityType Type { get; set; }
 
         public ICollection<MealProduct> Meals { get; set; }

@@ -3,6 +3,6 @@
     public enum QuantityType
     {
         Unit = 1,
-        Weight = 2
+        Kilos = 2
     }
 }
