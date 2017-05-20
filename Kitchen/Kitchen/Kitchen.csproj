@@ -67,7 +67,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Models\Dish.cs" />
+    <None Include="Models\Meal.cs" />
   </ItemGroup>
 
 </Project>

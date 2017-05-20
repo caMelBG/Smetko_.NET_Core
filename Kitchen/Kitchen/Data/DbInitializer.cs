@@ -3,7 +3,6 @@ using Kitchen.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
-using System.Linq;
 
 namespace Kitchen.Data
 {
@@ -11,19 +10,16 @@ namespace Kitchen.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
-              context.Database.EnsureCreated();
-
-            if (context.UserRoles.Any())
-            {
-                return;
-            }
-
             var roles = new string[] { Constants.AdminRole, Constants.OperatorRole };
-            foreach (string role in roles)
+            foreach (var role in roles)
             {
                 var roleStore = new RoleStore<IdentityRole>(context);
-                roleStore.CreateAsync(new IdentityRole(role));
-                
+                roleStore.CreateAsync(new IdentityRole()
+                {
+                    Name = role,
+                    NormalizedName = role.ToLower()
+                });
+
                 var user = new User
                 {
                     UserName = role,
@@ -39,8 +35,8 @@ namespace Kitchen.Data
                 var hashed = password.HashPassword(user, role);
                 user.PasswordHash = hashed;
                 var userStore = new UserStore<User>(context);
-                userStore.CreateAsync(user);
                 userStore.AddToRoleAsync(user, role.ToLower());
+                userStore.CreateAsync(user);
             }
         }
     }

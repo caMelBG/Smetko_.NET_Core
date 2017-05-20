@@ -8,8 +8,8 @@ namespace Kitchen.Models
         public string Name { get; set; }
 
         [Key]
-        public int DishId { get; set; }
+        public int MealId { get; set; }
 
-        public Dish Dish { get; set; }
+        public Meal Meal { get; set; }
     }
 }

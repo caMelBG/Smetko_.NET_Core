@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Kitchen.Models
 {
-    public class Dish
+    public class Meal
     {
-        private ICollection<DishProduct> _products;
+        private ICollection<MealProduct> _products;
 
-        public Dish()
+        public Meal()
         {
             this.IsActive = true;
-            this._products = new HashSet<DishProduct>();
+            this._products = new HashSet<MealProduct>();
         }
 
         public int Id { get; set; }
@@ -29,7 +29,7 @@ namespace Kitchen.Models
 
         public Category Category { get; set; }
 
-        public ICollection<DishProduct> Products
+        public ICollection<MealProduct> Products
         {
             get { return this._products; }
             set { this._products = value; }

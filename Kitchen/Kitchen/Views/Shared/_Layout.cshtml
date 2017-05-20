@@ -68,21 +68,21 @@
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>General</h3>
+                            <h3>Menu</h3>
                             <ul class="nav side-menu">
                                 <li>
                                     @if (User.IsInRole(Constants.AdminRole) || User.IsInRole(Constants.OperatorRole))
                                     {
                                         <a><i class="fa fa-home"></i> Meals <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><a asp-contoroller="Meals" asp-action="List">List All</a></li>
-                                            <li><a asp-contoroller="Meals" asp-action="Create" method="Get">Creat New</a></li>
-                                            <li><a asp-contoroller="" asp-action="">Temp</a></li>
+                                            <li><a asp-controller="Meals" asp-action="Index">List All</a></li>
+                                            <li><a asp-controller="Meals" asp-action="Create" method="Get">Creat New</a></li>
+                                            <li><a asp-controller="Meals" asp-action="">Temp</a></li>
                                         </ul>
                                     }
                                     else
                                     {
-                                        <a asp-contoroller="Meals" asp-action="List"><i class="fa fa-home"></i> Meals <span class="fa"></span></a>
+                                        <a asp-controller="Meals" asp-action="Index"><i class="fa fa-home"></i> Meals <span class="fa"></span></a>
                                     }
                                 </li>
                                 @if (User.IsInRole(Constants.AdminRole) || User.IsInRole(Constants.OperatorRole))
@@ -90,13 +90,13 @@
                                     <li>
                                         <a><i class="fa fa-edit"></i> Products <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><a asp-controller="Products" asp-acion="List">List All</a></li>
-                                            <li><a asp-controller="Products" asp-acion="Create" method="Post">Create New</a></li>
-                                            <li><a asp-controller="Products" asp-acion="">Temp</a></li>
+                                            <li><a asp-controller="Products" asp-action="Index">List All</a></li>
+                                            <li><a asp-controller="Products" asp-action="Create" method="Post">Create New</a></li>
+                                            <li><a asp-controller="Products" asp-action="">Temp</a></li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a asp-acion="List" asp-controller="Ordens"><i class="fa fa-desktop"></i> Ordens <span class="fa"></span></a>
+                                        <a asp-controller="Orders" asp-action="Index"><i class="fa fa-desktop"></i> Ordens <span class="fa"></span></a>
                                     </li>
                                 }
                             </ul>

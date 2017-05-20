@@ -5,11 +5,11 @@ namespace Kitchen.Models
 {
     public class Product
     {
-        private ICollection<DishProduct> _meals;
+        private ICollection<MealProduct> _meals;
 
         public Product()
         {
-            this._meals = new HashSet<DishProduct>();
+            this._meals = new HashSet<MealProduct>();
         }
 
         public int Id { get; set; }
@@ -19,6 +19,8 @@ namespace Kitchen.Models
 
         public double Quantity { get; set; }
 
-        public ICollection<DishProduct> Meals { get; set; }
+        public QuantityType Type { get; set; }
+
+        public ICollection<MealProduct> Meals { get; set; }
     }
 }
