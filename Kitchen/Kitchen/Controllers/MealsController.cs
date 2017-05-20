@@ -54,7 +54,7 @@ namespace Kitchen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Price,Weight,CategoryName")] Meal meal, [Bind("CategoryName", Prefix = "Category")] string test)
+        public async Task<IActionResult> Create(Meal meal)
         {
             if (ModelState.IsValid)
             {
@@ -143,6 +143,11 @@ namespace Kitchen.Controllers
             _context.Meals.Remove(meal);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        public IActionResult AddProduct()
+        {
+            return View();
         }
 
         private bool MealExists(int id)

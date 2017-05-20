@@ -7,7 +7,6 @@ namespace Kitchen.Models
     {
         [Required]
         [Display(Name = "Category Name")]
-        [ModelBinder]
         public string CategoryName { get; set; }
 
         [Key]

@@ -15,6 +15,7 @@ namespace Kitchen.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Product Name")]
         public string Name { get; set; }
 
         public double Quantity { get; set; }

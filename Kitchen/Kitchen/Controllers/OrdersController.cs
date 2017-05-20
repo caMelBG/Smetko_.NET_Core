@@ -56,6 +56,27 @@ namespace Kitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Price")] Order order)
         {
+            foreach (var meal in order.Meals)
+            {
+                foreach (var mealProduct in meal.Products)
+                {
+                    var product = mealProduct.Product;
+                    var productFromDb = await _context.Products.SingleOrDefaultAsync(p => p.Name == product.Name);
+                    if (productFromDb == null)
+                    {
+                        ModelState.AddModelError("", $"There is no product with name \"{product.Name}\"");
+                    }
+                    else if (productFromDb.Type != product.Type)
+                    {
+                        ModelState.AddModelError("", $"There is some problem with product \"{product.Name}\"");
+                    }
+                    else if (productFromDb.Quantity < product.Quantity)
+                    {
+                        ModelState.AddModelError("", $"There is no enough wuantity from \"{product.Name}\"");
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(order);
