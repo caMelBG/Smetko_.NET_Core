@@ -34,14 +34,14 @@ namespace Kitchen.Data.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    ProductId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
+                    ProductName = table.Column<string>(nullable: false),
                     Quantity = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,40 +72,40 @@ namespace Kitchen.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    DishId = table.Column<int>(nullable: false),
+                    MealId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.DishId);
+                    table.PrimaryKey("PK_Categories", x => x.MealId);
                     table.ForeignKey(
-                        name: "FK_Categories_Meals_DishId",
-                        column: x => x.DishId,
+                        name: "FK_Categories_Meals_MealId",
+                        column: x => x.MealId,
                         principalTable: "Meals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DishProduct",
+                name: "MealProduct",
                 columns: table => new
                 {
-                    DishProductId = table.Column<int>(nullable: false)
+                    MealProductId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DishId = table.Column<int>(nullable: false),
+                    MealId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DishProduct", x => x.DishProductId);
+                    table.PrimaryKey("PK_MealProduct", x => x.MealProductId);
                     table.ForeignKey(
-                        name: "FK_DishProduct_Meals_DishId",
-                        column: x => x.DishId,
+                        name: "FK_MealProduct_Meals_MealId",
+                        column: x => x.MealId,
                         principalTable: "Meals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DishProduct_Products_ProductId",
+                        name: "FK_MealProduct_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -124,13 +124,13 @@ namespace Kitchen.Data.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DishProduct_DishId",
-                table: "DishProduct",
-                column: "DishId");
+                name: "IX_MealProduct_MealId",
+                table: "MealProduct",
+                column: "MealId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DishProduct_ProductId",
-                table: "DishProduct",
+                name: "IX_MealProduct_ProductId",
+                table: "MealProduct",
                 column: "ProductId");
         }
 
@@ -140,7 +140,7 @@ namespace Kitchen.Data.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "DishProduct");
+                name: "MealProduct");
 
             migrationBuilder.DropTable(
                 name: "Meals");

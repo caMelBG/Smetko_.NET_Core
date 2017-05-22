@@ -9,9 +9,10 @@ using Kitchen.Models;
 namespace Kitchen.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170521164623_AddQuantityToMealProduct")]
+    partial class AddQuantityToMealProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -88,17 +89,17 @@ namespace Kitchen.Data.Migrations
 
             modelBuilder.Entity("Kitchen.Models.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ProductName")
+                    b.Property<string>("Name")
                         .IsRequired();
 
                     b.Property<double>("Quantity");
 
                     b.Property<int>("Type");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.ToTable("Products");
                 });

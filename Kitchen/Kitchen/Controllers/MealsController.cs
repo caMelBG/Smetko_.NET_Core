@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Kitchen.Data;
 using Kitchen.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kitchen.Controllers
 {
@@ -56,9 +53,24 @@ namespace Kitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Meal meal)
         {
+            if (meal.MealProducts != null)
+            {
+                if (meal.MealProducts.Count > 0)
+                {
+                    foreach (var mealProduct in meal.MealProducts)
+                    {
+                        var product = mealProduct.Product;
+                        if (!_context.Products.Any(p => p.ProductName == product.ProductName))
+                        {
+                            ModelState.AddModelError("ProductNotExist", $"\"There is no product with name {product.ProductName}\"");
+                        }
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Add(meal);
+                await _context.AddAsync(meal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -145,9 +157,21 @@ namespace Kitchen.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult AddProduct()
+        [HttpGet]
+        public IActionResult AddProduct(int? index)
         {
-            return View();
+            return View(index);
+        }
+
+
+        // GET: Products/AvaiableProductsNames/
+        [HttpGet]
+        public async Task<JsonResult> AvaiableProductsNames()
+        {
+            var procucts = await _context.Products
+                .Select(p => p.ProductName)
+                .ToArrayAsync();
+            return Json(procucts);
         }
 
         private bool MealExists(int id)

@@ -12,11 +12,11 @@ namespace Kitchen.Models
             this._meals = new HashSet<MealProduct>();
         }
 
-        public int Id { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
         [Display(Name = "Product Name")]
-        public string Name { get; set; }
+        public string ProductName { get; set; }
 
         public double Quantity { get; set; }
 

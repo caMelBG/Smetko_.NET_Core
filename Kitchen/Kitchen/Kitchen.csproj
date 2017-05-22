@@ -72,6 +72,8 @@
   <ItemGroup>
     <Folder Include="Models\ProductViewModels\" />
     <Folder Include="Models\OrderViewModels\" />
+    <Folder Include="Views\Meals\EditorTemplates\" />
+    <Folder Include="Views\Orders\EditorTemplates\" />
   </ItemGroup>
 
 </Project>

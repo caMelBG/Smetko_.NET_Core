@@ -1,4 +1,4 @@
-@model Kitchen.Models.Meal
+@model Meal
 
 @{
     ViewData["Title"] = "Details";
@@ -41,6 +41,25 @@
             @Html.DisplayFor(model => model.CategoryId)
         </dd>
     </dl>
+    <h4>Producs</h4>
+    @if (Model.MealProducts.Count > 0)
+    {
+    <ul>
+        @foreach (var mealProduct in Model.MealProducts)
+        {
+            <li>
+                @mealProduct.Product.ProductName
+            </li>
+            <li>
+                @mealProduct.Quantity
+            </li>
+        }
+    </ul>
+    }
+    else
+    {
+        @: none
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

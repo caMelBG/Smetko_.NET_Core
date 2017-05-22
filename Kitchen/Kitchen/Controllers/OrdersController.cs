@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Kitchen.Data;
 using Kitchen.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kitchen.Controllers
 {
@@ -16,7 +13,7 @@ namespace Kitchen.Controllers
 
         public OrdersController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Orders
@@ -46,7 +43,11 @@ namespace Kitchen.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            return View();
+            var avaiableMeals = _context.Meals
+                .Include(m => m.Category)
+                .Where(m => m.IsActive)
+                .ToList();
+            return View(new Order() { Meals = avaiableMeals });
         }
 
         // POST: Orders/Create
@@ -58,21 +59,21 @@ namespace Kitchen.Controllers
         {
             foreach (var meal in order.Meals)
             {
-                foreach (var mealProduct in meal.Products)
+                foreach (var mealProduct in meal.MealProducts)
                 {
                     var product = mealProduct.Product;
-                    var productFromDb = await _context.Products.SingleOrDefaultAsync(p => p.Name == product.Name);
+                    var productFromDb = await _context.Products.SingleOrDefaultAsync(p => p.ProductName == product.ProductName);
                     if (productFromDb == null)
                     {
-                        ModelState.AddModelError("", $"There is no product with name \"{product.Name}\"");
+                        ModelState.AddModelError("", $"There is no product with name \"{product.ProductName}\"");
                     }
                     else if (productFromDb.Type != product.Type)
                     {
-                        ModelState.AddModelError("", $"There is some problem with product \"{product.Name}\"");
+                        ModelState.AddModelError("", $"There is some problem with product \"{product.ProductName}\"");
                     }
                     else if (productFromDb.Quantity < product.Quantity)
                     {
-                        ModelState.AddModelError("", $"There is no enough wuantity from \"{product.Name}\"");
+                        ModelState.AddModelError("", $"There is no enough wuantity from \"{product.ProductName}\"");
                     }
                 }
             }

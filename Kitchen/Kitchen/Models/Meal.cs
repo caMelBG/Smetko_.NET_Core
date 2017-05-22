@@ -16,6 +16,7 @@ namespace Kitchen.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Meal name")]
         public string Name { get; set; }
 
         [Required]
@@ -30,7 +31,7 @@ namespace Kitchen.Models
 
         public Category Category { get; set; }
 
-        public ICollection<MealProduct> Products
+        public ICollection<MealProduct> MealProducts
         {
             get { return this._products; }
             set { this._products = value; }

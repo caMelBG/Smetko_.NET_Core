@@ -1,4 +1,4 @@
-@model Product
+@model int
 
 @{
     Layout = "";
@@ -7,27 +7,27 @@
 <div class="form-horizontal">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="Name" class="col-md-2 control-label"></label>
-        <div class="col-md-2">
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+        @*<input type="hidden" name="Products[@Model].Id" class="productIdHidden" />*@
+        @*<input type="hidden" name="Products[@Model].MealId" class="productIdHidden" />*@
+        <label class="col-md-2 control-label">
+            Product Name
+        </label>
+        <div class="col-md-5">
+            <input name="Products[@Model].Product.ProductName" class="productName" />
         </div>
-        <label asp-for="Quantity" class="col-md-2 control-label"></label>
-        <div class="col-md-1">
-            <input asp-for="Quantity" class="form-control" />
-            <span asp-validation-for="Quantity" class="text-danger"></span>
-        </div>
-        <label asp-for="Type" class="col-md-2 control-label"></label>
-        <div class="col-md-2">
-            <select asp-for="Type" class="form-control">
-                <option>
-                    @QuantityType.Unit
-                </option>
-                <option>
-                    @QuantityType.Kilos
-                </option>
-            </select>
-            <span asp-validation-for="Type" class="text-danger"></span>
+        <label class="col-md-1 control-label">
+            Quantity
+        </label>
+        <div class="col-md-4">
+            <input name="Products[@Model].Quantity" class="" />
         </div>
     </div>
 </div>
+
+<script>
+    $.get("AvaiableProductsNames", function (data, status) {
+        $(".productName").autocomplete({
+            source: data
+        });
+    });
+</script>

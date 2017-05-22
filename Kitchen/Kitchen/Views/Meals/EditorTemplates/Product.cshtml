@@ -1,0 +1,22 @@
+@model Product
+
+@{
+    Layout = null;
+}
+
+<div class="form-horizontal">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="ProductId" class="productIdHidden" />
+        <label asp-for="ProductName" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input name="ProductName" class="form-control productName" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+        <label asp-for="Quantity" class="col-md-1 control-label"></label>
+        <div class="col-md-4">
+            <input name="Quantity" class="form-control" />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+    </div>
+</div>
