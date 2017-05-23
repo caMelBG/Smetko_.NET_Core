@@ -6,91 +6,115 @@
 
 @if (Model.OrderMeals.Count > 0)
 {
-    <div class="x_content">
-        <div class="table-responsive">
-            <table class="table table-striped jambo_table bulk_action">
-                <thead>
-                    <tr class="headings">
-                        <th>
-                            <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                        </th>
-                        <th class="column-title">
-                            @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Name)
-                        </th>
-                        <th class="column-title">
-                            @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Price)
-                        </th>
-                        <th class="column-title">
-                            @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Weight)
-                        </th>
-                        <th class="column-title">
-                            @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Category.CategoryName)
-                        </th>
-                        <th class="column-title">
-                        </th>
-                        <th class="bulk-actions" colspan="7">
-                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int index = 0;
-                    }
-                    @foreach (var orderMeal in Model.OrderMeals)
-                    {
-                        <tr class="even pointer">
-                            <td class="a-center ">
-                                <div class="icheckbox_flat-green" style="position: relative;">
-                                    <input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;">
-                                    <ins class="iCheck-helper"
-                                         style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
-                                    </ins>
-                                </div>
-                            </td>
-                            <td class=" ">
-                                @Html.Display(orderMeal.Meal.Name)
-                            </td>
-                            <td class=" ">
-                                @Html.Display(orderMeal.Meal.Price.ToString())
-                            </td>
-                            <td class=" ">
-                                @Html.Display(orderMeal.Meal.Weight.ToString())
-                            </td>
-                            <td class=" ">
-                                <label>
-                                    @if (orderMeal.Meal.Category == null)
-                                    {
-                                        @: none
-                                    }
-                                    else
-                                    {
-                                        @: @orderMeal.Meal.Category.CategoryName
-                                    }
-                                </label>
-                            </td>
-                            <td>
-                                <a asp-controller="Meals" asp-action="Details" asp-route-id="@Model.Id">View</a>
-                            </td>
-                        </tr>
-                    }
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
-
-<form asp-action="Create">
-    <div class="form-horizontal">
-        <h4>Order</h4>
-        <hr />
+    <form asp-action="Create" asp-controller="Orders">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Price" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th>
+                                @*<div class="icheckbox_flat-green" style="position: relative;">
+                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
+                                        <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
+                                        </ins>
+                                    </div>*@
+                            </th>
+                            <th class="column-title">
+                                @Html.DisplayNameFor(o => o.OrderMeals.First().Quantity)
+                            </th>
+                            <th class="column-title">
+                                @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Name)
+                            </th>
+                            <th class="column-title">
+                                @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Price)
+                            </th>
+                            <th class="column-title">
+                                @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Weight)
+                            </th>
+                            <th class="column-title">
+                                @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Category.CategoryName)
+                            </th>
+                            <th class="column-title">
+                            </th>
+                            <th class="bulk-actions" colspan="7">
+                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int index = -1;
+                        }
+                        @foreach (var orderMeal in Model.OrderMeals)
+                        {
+                            index++;
+                            <tr class="even pointer">
+                                <td class="a-center">
+                                    <input type="hidden" name="OrderMeals[@index].MealId" value="@orderMeal.MealId" />
+
+                                    <div class="icheckbox_flat-green"
+                                         style="position: relative;">
+                                        <input type="checkbox"
+                                               class="flat"
+                                               style="
+                                                position: absolute;
+                                                opacity: 0;">
+                                        <ins class="iCheck-helper"
+                                             style="
+                                                 position: absolute;
+                                                 top: 0%;
+                                                 left: 0%;
+                                                 display: block;
+                                                 width: 100%;
+                                                 height: 100%;
+                                                 margin: 0px;
+                                                 padding: 0px;
+                                                 background: rgb(255, 255, 255);
+                                                 border: 0px;
+                                                 opacity: 0;">
+                                        </ins>
+                                    </div>
+
+                                </td>
+                                <td class="col-md-1">
+                                    <input type="text" name="OrderMeals[@index].Quantity" asp-for="@orderMeal.Quantity" class="form-control" />
+                                </td>
+                                <td class=" ">
+                                    <label>
+                                        @orderMeal.Meal.Name
+                                    </label>
+                                </td>
+                                <td class=" ">
+                                    <label>
+                                        @orderMeal.Meal.Price
+                                    </label>
+                                </td>
+                                <td class=" ">
+                                    <lable>
+                                        @orderMeal.Meal.Weight
+                                    </lable>
+                                </td>
+                                <td class=" ">
+                                    <label>
+                                        @if (orderMeal.Meal.Category == null)
+                                        {
+                                            @: none
+                                    }
+                                        else
+                                        {
+                                            @: @orderMeal.Meal.Category.CategoryName
+                                    }
+                                    </label>
+                                </td>
+                                <td>
+                                    <a asp-controller="Meals" asp-action="Details" asp-route-id="@orderMeal.Meal.Id">View</a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="form-group">
@@ -98,8 +122,8 @@
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
-    </div>
-</form>
+    </form>
+                            }
 
 <div>
     <a asp-action="Index">Back to List</a>

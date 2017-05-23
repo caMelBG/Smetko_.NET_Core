@@ -2,6 +2,7 @@ using Kitchen.Data;
 using Kitchen.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -48,7 +49,8 @@ namespace Kitchen.Controllers
                 .Where(m => m.IsActive)
                 .Select(m => new OrderMeal()
                     {
-                        Meal = m
+                        Meal = m,
+                        MealId = m.Id
                     })
                 .ToList();
             var order = new Order() { OrderMeals = avaiableMeals};
@@ -60,34 +62,56 @@ namespace Kitchen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price")] Order order)
+        public async Task<IActionResult> Create(Order order)
         {
-            foreach (var orderMeal in order.OrderMeals)
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                foreach (var mealProduct in orderMeal.Meal.MealProducts)
+                try
                 {
-                    var product = mealProduct.Product;
-                    var productFromDb = await _context.Products.SingleOrDefaultAsync(p => p.ProductName == product.ProductName);
-                    if (productFromDb == null)
+                    foreach (var orderMeal in order.OrderMeals)
                     {
-                        ModelState.AddModelError("", $"There is no product with name \"{product.ProductName}\"");
+                        if (orderMeal.IsSelected)
+                        {
+                            var mealFromDb = await _context.Meals
+                                .Include(m => m.MealProducts)
+                                    .ThenInclude(ml => ml.Product)
+                                 .Include(m => m.Category)
+                                .SingleOrDefaultAsync(m => m.Id == orderMeal.MealId);
+                            if (mealFromDb != null)
+                            {
+                                orderMeal.Meal = mealFromDb;
+                                foreach (var mealProduct in mealFromDb.MealProducts)
+                                {
+                                    var product = mealProduct.Product;
+                                    if ((mealProduct.Quantity * orderMeal.Quantity) > product.Quantity)
+                                    {
+                                        ModelState.AddModelError("",
+                                            $"There is no enough quantity of \"{product.ProductName}\" to" +
+                                            $" make {orderMeal.Quantity} {mealFromDb.Name}" +
+                                            $" NEED: {mealProduct.Quantity * orderMeal.Quantity} HAVE: {product.Quantity}");
+                                    }
+                                    else
+                                    {
+                                        order.Price += mealFromDb.Price;
+                                        product.Quantity -= (mealProduct.Quantity * orderMeal.Quantity);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    else if (productFromDb.Type != product.Type)
+
+                    if (ModelState.IsValid)
                     {
-                        ModelState.AddModelError("", $"There is some problem with product \"{product.ProductName}\"");
-                    }
-                    else if (productFromDb.Quantity < product.Quantity)
-                    {
-                        ModelState.AddModelError("", $"There is no enough wuantity from \"{product.ProductName}\"");
+                        dbContextTransaction.Commit();
+                        _context.Add(order);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction("Index");
                     }
                 }
-            }
-
-            if (ModelState.IsValid)
-            {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
+                }
             }
             return View(order);
         }
