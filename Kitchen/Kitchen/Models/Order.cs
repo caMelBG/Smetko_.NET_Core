@@ -4,21 +4,21 @@ namespace Kitchen.Models
 {
     public class Order
     {
-        private ICollection<Meal> _meals;
+        private ICollection<OrderMeal> _orderMeals;
 
         public Order()
         {
-            this._meals = new HashSet<Meal>();
+            this._orderMeals = new HashSet<OrderMeal>();
         }
 
         public int Id { get; set; }
 
         public decimal Price { get; set; }
 
-        public ICollection<Meal> Meals
+        public ICollection<OrderMeal> OrderMeals
         {
-            get { return this._meals; }
-            set { this._meals = value; }
+            get { return this._orderMeals; }
+            set { this._orderMeals = value; }
         }
     }
 }

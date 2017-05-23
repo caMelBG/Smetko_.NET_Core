@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-@if (Model.Meals.Count > 0)
+@if (Model.OrderMeals.Count > 0)
 {
     <div class="x_content">
         <div class="table-responsive">
@@ -15,16 +15,16 @@
                             <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
                         </th>
                         <th class="column-title">
-                            @Html.DisplayNameFor(o => o.Meals.First().Name)
+                            @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Name)
                         </th>
                         <th class="column-title">
-                            @Html.DisplayNameFor(o => o.Meals.First().Price)
+                            @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Price)
                         </th>
                         <th class="column-title">
-                            @Html.DisplayNameFor(o => o.Meals.First().Weight)
+                            @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Weight)
                         </th>
                         <th class="column-title">
-                            @Html.DisplayNameFor(o => o.Meals.First().Category.CategoryName)
+                            @Html.DisplayNameFor(o => o.OrderMeals.First().Meal.Category.CategoryName)
                         </th>
                         <th class="column-title">
                         </th>
@@ -37,7 +37,7 @@
                     @{
                         int index = 0;
                     }
-                    @foreach (var meal in Model.Meals)
+                    @foreach (var orderMeal in Model.OrderMeals)
                     {
                         <tr class="even pointer">
                             <td class="a-center ">
@@ -49,23 +49,23 @@
                                 </div>
                             </td>
                             <td class=" ">
-                                @Html.Display(meal.Name)
+                                @Html.Display(orderMeal.Meal.Name)
                             </td>
                             <td class=" ">
-                                @Html.Display(meal.Price.ToString())
+                                @Html.Display(orderMeal.Meal.Price.ToString())
                             </td>
                             <td class=" ">
-                                @Html.Display(meal.Weight.ToString())
+                                @Html.Display(orderMeal.Meal.Weight.ToString())
                             </td>
                             <td class=" ">
                                 <label>
-                                    @if (meal.Category == null)
+                                    @if (orderMeal.Meal.Category == null)
                                     {
                                         @: none
                                     }
                                     else
                                     {
-                                        @: @meal.Category.CategoryName
+                                        @: @orderMeal.Meal.Category.CategoryName
                                     }
                                 </label>
                             </td>

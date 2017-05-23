@@ -46,8 +46,13 @@ namespace Kitchen.Controllers
             var avaiableMeals = _context.Meals
                 .Include(m => m.Category)
                 .Where(m => m.IsActive)
+                .Select(m => new OrderMeal()
+                    {
+                        Meal = m
+                    })
                 .ToList();
-            return View(new Order() { Meals = avaiableMeals });
+            var order = new Order() { OrderMeals = avaiableMeals};
+            return View(order);
         }
 
         // POST: Orders/Create
@@ -57,9 +62,9 @@ namespace Kitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Price")] Order order)
         {
-            foreach (var meal in order.Meals)
+            foreach (var orderMeal in order.OrderMeals)
             {
-                foreach (var mealProduct in meal.MealProducts)
+                foreach (var mealProduct in orderMeal.Meal.MealProducts)
                 {
                     var product = mealProduct.Product;
                     var productFromDb = await _context.Products.SingleOrDefaultAsync(p => p.ProductName == product.ProductName);
