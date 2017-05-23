@@ -17,7 +17,7 @@ namespace Kitchen.Models
         [Required]
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
-
+            
         public double Quantity { get; set; }
 
         [Display(Name = "Quantity Type")]

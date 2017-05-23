@@ -51,7 +51,7 @@ namespace Kitchen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Quantity,Type")] Product product)
+        public async Task<IActionResult> Create(Product product)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace Kitchen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Quantity,Type")] Product product)
+        public async Task<IActionResult> Edit(int id ,Product product)
         {
             if (id != product.ProductId)
             {

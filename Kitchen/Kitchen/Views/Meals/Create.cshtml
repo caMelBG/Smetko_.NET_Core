@@ -6,16 +6,6 @@
 
 <h2>Create</h2>
 
-
-@foreach (var modelState in ViewData.ModelState.Values)
-{
-    foreach (var error in modelState.Errors)
-    {
-        var message = error.ErrorMessage;
-        @: @message <br />
-    }
-}
-
 <form asp-action="Create">
     <div class="form-horizontal">
         <h4>Meal</h4>

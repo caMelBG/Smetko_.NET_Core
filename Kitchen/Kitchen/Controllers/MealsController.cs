@@ -1,5 +1,7 @@
 using Kitchen.Data;
+using Kitchen.Infrastructure;
 using Kitchen.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -31,6 +33,8 @@ namespace Kitchen.Controllers
             }
 
             var meal = await _context.Meals
+                .Include(m => m.MealProducts)
+                    .ThenInclude(ml => ml.Product)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (meal == null)
             {
@@ -41,6 +45,7 @@ namespace Kitchen.Controllers
         }
 
         // GET: Meals/Create
+        [Authorize(Roles = Constants.AdminRole)]
         public IActionResult Create()
         {
             return View();
@@ -50,6 +55,7 @@ namespace Kitchen.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = Constants.AdminRole)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Meal meal)
         {
@@ -85,7 +91,9 @@ namespace Kitchen.Controllers
                 return NotFound();
             }
 
-            var meal = await _context.Meals.SingleOrDefaultAsync(m => m.Id == id);
+            var meal = await _context.Meals
+                .Include(m => m.Category)
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (meal == null)
             {
                 return NotFound();
@@ -137,6 +145,7 @@ namespace Kitchen.Controllers
             }
 
             var meal = await _context.Meals
+                .Include(m => m.Category)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (meal == null)
             {
@@ -151,7 +160,9 @@ namespace Kitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var meal = await _context.Meals.SingleOrDefaultAsync(m => m.Id == id);
+            var meal = await _context.Meals
+                .Include(m => m.Category)
+                .SingleOrDefaultAsync(m => m.Id == id);
             _context.Meals.Remove(meal);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -162,8 +173,7 @@ namespace Kitchen.Controllers
         {
             return View(index);
         }
-
-
+        
         // GET: Products/AvaiableProductsNames/
         [HttpGet]
         public async Task<JsonResult> AvaiableProductsNames()
