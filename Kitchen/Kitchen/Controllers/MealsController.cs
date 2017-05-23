@@ -70,6 +70,10 @@ namespace Kitchen.Controllers
                         {
                             ModelState.AddModelError("ProductNotExist", $"\"There is no product with name {product.ProductName}\"");
                         }
+                        else
+                        {
+                            mealProduct.Product = await _context.Products.SingleOrDefaultAsync(p => p.ProductName == product.ProductName);
+                        }
                     }
                 }
             }
