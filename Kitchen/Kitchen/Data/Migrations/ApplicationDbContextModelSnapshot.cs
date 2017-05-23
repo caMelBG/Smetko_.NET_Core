@@ -91,6 +91,8 @@ namespace Kitchen.Data.Migrations
 
                     b.Property<int>("OrderId");
 
+                    b.Property<int>("Quantity");
+
                     b.HasKey("OrderMealId");
 
                     b.HasIndex("MealId");

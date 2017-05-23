@@ -29,12 +29,12 @@
             <label asp-for="Type" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select asp-for="Type" class="form-control">
-                    <option>
-                        @QuantityType.Unit
-                    </option>
-                    <option>
-                        @QuantityType.Kilos
-                    </option>
+                    @foreach (var type in Enum.GetValues(typeof(QuantityType)))
+                    {
+                        <option>
+                            @type
+                        </option>
+                    }
                 </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>

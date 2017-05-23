@@ -9,8 +9,8 @@ using Kitchen.Models;
 namespace Kitchen.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170523090325_AddOrderMeals")]
-    partial class AddOrderMeals
+    [Migration("20170523204847_AddOrderMealQuantity")]
+    partial class AddOrderMealQuantity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,15 +42,11 @@ namespace Kitchen.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int?>("OrderId");
-
                     b.Property<decimal>("Price");
 
                     b.Property<double>("Weight");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Meals");
                 });
@@ -85,6 +81,26 @@ namespace Kitchen.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Kitchen.Models.OrderMeal", b =>
+                {
+                    b.Property<int>("OrderMealId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("MealId");
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("OrderMealId");
+
+                    b.HasIndex("MealId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderMeal");
                 });
 
             modelBuilder.Entity("Kitchen.Models.Product", b =>
@@ -269,13 +285,6 @@ namespace Kitchen.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Kitchen.Models.Meal", b =>
-                {
-                    b.HasOne("Kitchen.Models.Order")
-                        .WithMany("Meals")
-                        .HasForeignKey("OrderId");
-                });
-
             modelBuilder.Entity("Kitchen.Models.MealProduct", b =>
                 {
                     b.HasOne("Kitchen.Models.Meal", "Meal")
@@ -286,6 +295,19 @@ namespace Kitchen.Data.Migrations
                     b.HasOne("Kitchen.Models.Product", "Product")
                         .WithMany("Meals")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Kitchen.Models.OrderMeal", b =>
+                {
+                    b.HasOne("Kitchen.Models.Meal", "Meal")
+                        .WithMany()
+                        .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Kitchen.Models.Order", "Order")
+                        .WithMany("OrderMeals")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

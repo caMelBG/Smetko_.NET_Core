@@ -6,16 +6,6 @@
 
 <h2>Details</h2>
 
-
-@foreach (var modelState in ViewData.ModelState.Values)
-{
-    foreach (var error in modelState.Errors)
-    {
-        var message = error.ErrorMessage;
-        @: @message <br />
-    }
-}
-
 <div>
     <h4>Meal</h4>
     <hr />

@@ -19,8 +19,7 @@ namespace Kitchen.Models
         public int MealId { get; set; }
 
         public Meal Meal { get; set; }
-
-        [NotMapped]
+       
         public int Quantity { get; set; }
 
         [NotMapped]

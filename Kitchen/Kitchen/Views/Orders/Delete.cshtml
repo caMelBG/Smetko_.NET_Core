@@ -1,4 +1,4 @@
-@model Kitchen.Models.Order
+@model Order
 
 @{
     ViewData["Title"] = "Delete";
@@ -19,7 +19,7 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |

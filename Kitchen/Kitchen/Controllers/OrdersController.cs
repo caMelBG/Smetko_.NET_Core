@@ -20,7 +20,11 @@ namespace Kitchen.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            var orders = await _context.Orders
+                .Include(o => o.OrderMeals)
+                    .ThenInclude(om => om.Meal)
+                .ToListAsync();
+            return View(orders);
         }
 
         // GET: Orders/Details/5
@@ -76,10 +80,11 @@ namespace Kitchen.Controllers
                                 .Include(m => m.MealProducts)
                                     .ThenInclude(ml => ml.Product)
                                  .Include(m => m.Category)
-                                .SingleOrDefaultAsync(m => m.Id == orderMeal.MealId);
+                                .SingleOrDefaultAsync(m => m.Id == orderMeal.Meal.Id);
                             if (mealFromDb != null)
                             {
                                 orderMeal.Meal = mealFromDb;
+                                order.Price += (orderMeal.Quantity * mealFromDb.Price);
                                 foreach (var mealProduct in mealFromDb.MealProducts)
                                 {
                                     var product = mealProduct.Product;
@@ -92,7 +97,6 @@ namespace Kitchen.Controllers
                                     }
                                     else
                                     {
-                                        order.Price += mealFromDb.Price;
                                         product.Quantity -= (mealProduct.Quantity * orderMeal.Quantity);
                                     }
                                 }
