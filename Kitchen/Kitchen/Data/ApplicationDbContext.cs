@@ -13,7 +13,7 @@ namespace Kitchen.Data
 
         public DbSet<Meal> Meals { get; set; }
 
-        public DbSet<MealProduct> DishProduct { get; set; }
+        public DbSet<MealProduct> MealProduct { get; set; }
 
         public DbSet<Product> Products { get; set; }
 
@@ -25,8 +25,7 @@ namespace Kitchen.Data
         {
             builder.Entity<Meal>()
                 .HasOne(d => d.Category)
-                .WithOne(c => c.Meal)
-                .HasForeignKey<Category>(c => c.MealId);
+                .WithMany(c => c.Meals);
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.

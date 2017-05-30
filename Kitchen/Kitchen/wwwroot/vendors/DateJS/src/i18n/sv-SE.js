@@ -1,14 +1,14 @@
 /* 
  * DateJS Culture String File
  * Country Code: sv-SE
- * Name: Swedish (Sweden)
+ * Name: SweMeal (Sweden)
  * Format: "key" : "value"
  * Key is the en-US term, Value is the Key in the current language.
  */
 Date.CultureStrings = Date.CultureStrings || {};
 Date.CultureStrings["sv-SE"] = {
         "name": "sv-SE",
-        "englishName": "Swedish (Sweden)",
+        "englishName": "SweMeal (Sweden)",
         "nativeName": "Svenska (Sverige)",
         "Sunday": "Söndag",
         "Monday": "Måndag",

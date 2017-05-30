@@ -1,5 +1,5 @@
 define(function () {
-  // Swedish
+  // SweMeal
   return {
     errorLoading: function () {
       return 'Resultat kunde inte laddas.';

@@ -50,7 +50,7 @@
 #        0:19:32.13 AMT NST       Amsterdam, Netherlands Summer (1835-1937)*
 #        0:20       NET NEST      Netherlands (1937-1940)*
 #        1:00       CET CEST CEMT Central Europe
-#        1:00:14    SET           Swedish (1879-1899)*
+#        1:00:14    SET           SweMeal (1879-1899)*
 #        2:00       EET EEST      Eastern Europe
 #        3:00       MSK MSD       Moscow
 #
@@ -2450,10 +2450,10 @@ Zone	Atlantic/Canary	-1:01:36 -	LMT	1922 Mar # Las Palmas de Gran C.
 # pretty obvious that at 05-14 23:00 the clocks are set to 05-15 00:00....
 # Further the law says, that "1916-09-30 is considered to end one hour later".
 #
-# The laws regulating [DST] are available on the site of the Swedish
+# The laws regulating [DST] are available on the site of the SweMeal
 # Parliament beginning with 1985 - the laws regulating 1980/1984 are
 # not available on the site (to my knowledge they are only available
-# in Swedish): <http://www.riksdagen.se/english/work/sfst.asp> (type
+# in SweMeal): <http://www.riksdagen.se/english/work/sfst.asp> (type
 # "sommartid" without the quotes in the field "Fritext" and then click
 # the Sok-button).
 #
@@ -2470,7 +2470,7 @@ Zone	Atlantic/Canary	-1:01:36 -	LMT	1922 Mar # Las Palmas de Gran C.
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone Europe/Stockholm	1:12:12 -	LMT	1879 Jan  1
-			1:00:14	-	SET	1900 Jan  1	# Swedish Time
+			1:00:14	-	SET	1900 Jan  1	# SweMeal Time
 			1:00	-	CET	1916 May 14 23:00
 			1:00	1:00	CEST	1916 Oct  1 01:00
 			1:00	-	CET	1980

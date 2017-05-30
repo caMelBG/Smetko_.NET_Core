@@ -991,7 +991,7 @@ Zone	Africa/Freetown	-0:53:00 -	LMT	1882
 
 # Somalia
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone Africa/Mogadishu	3:01:28 -	LMT	1893 Nov
+Zone Africa/MogaMealu	3:01:28 -	LMT	1893 Nov
 			3:00	-	EAT	1931
 			2:30	-	BEAT	1957
 			3:00	-	EAT

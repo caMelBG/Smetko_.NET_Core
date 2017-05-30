@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Kitchen.Data;
 using Kitchen.Models;
 
-namespace Kitchen.Data.Migrations
+namespace Kitchen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170523204847_AddOrderMealQuantity")]
-    partial class AddOrderMealQuantity
+    [Migration("20170530193022_InitialDatabase")]
+    partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,12 +20,13 @@ namespace Kitchen.Data.Migrations
 
             modelBuilder.Entity("Kitchen.Models.Category", b =>
                 {
-                    b.Property<int>("MealId");
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("CategoryName")
                         .IsRequired();
 
-                    b.HasKey("MealId");
+                    b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -48,6 +49,8 @@ namespace Kitchen.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Meals");
                 });
 
@@ -68,7 +71,7 @@ namespace Kitchen.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DishProduct");
+                    b.ToTable("MealProduct");
                 });
 
             modelBuilder.Entity("Kitchen.Models.Order", b =>
@@ -277,11 +280,11 @@ namespace Kitchen.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Kitchen.Models.Category", b =>
+            modelBuilder.Entity("Kitchen.Models.Meal", b =>
                 {
-                    b.HasOne("Kitchen.Models.Meal", "Meal")
-                        .WithOne("Category")
-                        .HasForeignKey("Kitchen.Models.Category", "MealId")
+                    b.HasOne("Kitchen.Models.Category", "Category")
+                        .WithMany("Meals")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

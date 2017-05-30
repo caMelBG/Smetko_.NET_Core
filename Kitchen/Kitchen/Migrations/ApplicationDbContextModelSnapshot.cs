@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Kitchen.Data;
 using Kitchen.Models;
 
-namespace Kitchen.Data.Migrations
+namespace Kitchen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170520124050_UpdateCategory")]
-    partial class UpdateCategory
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -20,12 +19,13 @@ namespace Kitchen.Data.Migrations
 
             modelBuilder.Entity("Kitchen.Models.Category", b =>
                 {
-                    b.Property<int>("MealId");
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("CategoryName")
                         .IsRequired();
 
-                    b.HasKey("MealId");
+                    b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -42,15 +42,13 @@ namespace Kitchen.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int?>("OrderId");
-
                     b.Property<decimal>("Price");
 
                     b.Property<double>("Weight");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Meals");
                 });
@@ -64,13 +62,15 @@ namespace Kitchen.Data.Migrations
 
                     b.Property<int>("ProductId");
 
+                    b.Property<double>("Quantity");
+
                     b.HasKey("MealProductId");
 
                     b.HasIndex("MealId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DishProduct");
+                    b.ToTable("MealProduct");
                 });
 
             modelBuilder.Entity("Kitchen.Models.Order", b =>
@@ -85,19 +85,39 @@ namespace Kitchen.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Kitchen.Models.Product", b =>
+            modelBuilder.Entity("Kitchen.Models.OrderMeal", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderMealId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name")
+                    b.Property<int>("MealId");
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("OrderMealId");
+
+                    b.HasIndex("MealId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderMeal");
+                });
+
+            modelBuilder.Entity("Kitchen.Models.Product", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ProductName")
                         .IsRequired();
 
                     b.Property<double>("Quantity");
 
                     b.Property<int>("Type");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductId");
 
                     b.ToTable("Products");
                 });
@@ -259,31 +279,37 @@ namespace Kitchen.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Kitchen.Models.Category", b =>
-                {
-                    b.HasOne("Kitchen.Models.Meal", "Meal")
-                        .WithOne("Category")
-                        .HasForeignKey("Kitchen.Models.Category", "MealId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Kitchen.Models.Meal", b =>
                 {
-                    b.HasOne("Kitchen.Models.Order")
+                    b.HasOne("Kitchen.Models.Category", "Category")
                         .WithMany("Meals")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Kitchen.Models.MealProduct", b =>
                 {
                     b.HasOne("Kitchen.Models.Meal", "Meal")
-                        .WithMany("Products")
+                        .WithMany("MealProducts")
                         .HasForeignKey("MealId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Kitchen.Models.Product", "Product")
                         .WithMany("Meals")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Kitchen.Models.OrderMeal", b =>
+                {
+                    b.HasOne("Kitchen.Models.Meal", "Meal")
+                        .WithMany()
+                        .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Kitchen.Models.Order", "Order")
+                        .WithMany("OrderMeals")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
