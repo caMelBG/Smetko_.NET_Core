@@ -40,11 +40,6 @@
             </div>
         </div>
 
-        @if (ViewData.ModelState.ContainsKey("ProductNotExist"))
-        {
-            <div class="text-danger">@ViewData.ModelState["ProductNotExist"].Errors.First().ErrorMessage</div>
-        }
-
         <div id="products-container">
         </div>
 

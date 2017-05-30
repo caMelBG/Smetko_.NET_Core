@@ -48,16 +48,18 @@ namespace Kitchen.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            var avaiableMeals = _context.Meals
-                .Include(m => m.Category)
-                .Where(m => m.IsActive)
-                .Select(m => new OrderMeal()
+            var order = new Order()
+            {
+                OrderMeals = _context.Meals
+                    .Include(m => m.Category)
+                    .Where(m => m.IsActive)
+                    .Select(m => new OrderMeal()
                     {
                         Meal = m,
                         MealId = m.Id
                     })
-                .ToList();
-            var order = new Order() { OrderMeals = avaiableMeals};
+                    .ToList()
+            };
             return View(order);
         }
 
@@ -68,22 +70,29 @@ namespace Kitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Order order)
         {
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            if (!order.OrderMeals.Any(om => om.IsSelected))
             {
-                try
+                ModelState.AddModelError("", $"You haven't selected any meal.");
+            }
+            else
+            {
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
                 {
-                    foreach (var orderMeal in order.OrderMeals)
+                    try
                     {
-                        if (orderMeal.IsSelected)
+                        var selectedMeal = order.OrderMeals
+                            .Where(om => om.IsSelected)
+                            .ToList();
+                        order.OrderMeals = selectedMeal;
+                        foreach (var orderMeal in order.OrderMeals)
                         {
                             var mealFromDb = await _context.Meals
                                 .Include(m => m.MealProducts)
                                     .ThenInclude(ml => ml.Product)
                                  .Include(m => m.Category)
-                                .SingleOrDefaultAsync(m => m.Id == orderMeal.Meal.Id);
+                                .FirstOrDefaultAsync(m => m.Id == orderMeal.MealId);
                             if (mealFromDb != null)
                             {
-                                orderMeal.Meal = mealFromDb;
                                 order.Price += (orderMeal.Quantity * mealFromDb.Price);
                                 foreach (var mealProduct in mealFromDb.MealProducts)
                                 {
@@ -91,9 +100,8 @@ namespace Kitchen.Controllers
                                     if ((mealProduct.Quantity * orderMeal.Quantity) > product.Quantity)
                                     {
                                         ModelState.AddModelError("",
-                                            $"There is no enough quantity of \"{product.ProductName}\" to" +
-                                            $" make {orderMeal.Quantity} {mealFromDb.Name}" +
-                                            $" NEED: {mealProduct.Quantity * orderMeal.Quantity} HAVE: {product.Quantity}");
+                                            $"There is no enough \"{product.ProductName}\" to" +
+                                            $" make {orderMeal.Quantity} {mealFromDb.Name}");
                                     }
                                     else
                                     {
@@ -102,22 +110,39 @@ namespace Kitchen.Controllers
                                 }
                             }
                         }
-                    }
 
-                    if (ModelState.IsValid)
-                    {
-                        dbContextTransaction.Commit();
-                        _context.Add(order);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction("Index");
+                        if (ModelState.IsValid)
+                        {
+                            _context.Add(order);
+                            dbContextTransaction.Commit();
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            dbContextTransaction.Rollback();
+                        }
                     }
-                }
-                catch (Exception)
-                {
-                    dbContextTransaction.Rollback();
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                    }
                 }
             }
-            return View(order);
+
+            var newOrder = new Order()
+            {
+                OrderMeals = _context.Meals
+                    .Include(m => m.Category)
+                    .Where(m => m.IsActive)
+                    .Select(m => new OrderMeal()
+                    {
+                        Meal = m,
+                        MealId = m.Id
+                    })
+                    .ToList()
+            };
+            return View(newOrder);
         }
 
         // GET: Orders/Edit/5

@@ -4,17 +4,6 @@
     ViewData["Title"] = "Create";
 }
 
-
-@foreach (var modelState in ViewData.ModelState.Values)
-{
-    foreach (var error in modelState.Errors)
-    {
-        @: @error.ErrorMessage
-    }
-}
-
-
-
 <form asp-action="Create" asp-controller="Orders">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="x_content">
@@ -53,7 +42,7 @@
                         index++;
                         <tr class="even pointer">
                             <td class="a-center ">
-                                <input type="hidden" name="OrderMeals[@index].Meal.Id" asp-for="@orderMeal.Meal.Id"/>
+                                <input type="hidden" name="OrderMeals[@index].MealId" asp-for="@orderMeal.MealId"/>
                                 @*<input type="checkbox" name="OrderMeals[@index].IsSelected" for="@orderMeal.IsSelected" class="flat" style="position: absolute; opacity: 0;"/>*@
                                 @Html.CheckBox($"OrderMeals[{index}].IsSelected", false, new { @class = "flat", name = $"OrderMeals[{index}].IsSelected", style = "position: absolute; opacity: 0;", @for = orderMeal.IsSelected})
                             </td>
@@ -61,7 +50,7 @@
                                 <input type="text" name="OrderMeals[@index].Quantity" asp-for="@orderMeal.Quantity" class="form-control"/>
                             </td>
                             <td class=" ">
-                                <input type="hidden" name="OrderMeals[@index].Meal.Name" asp-for="@orderMeal.Meal.Name"/>                                 
+                                @*<input type="hidden" name="OrderMeals[@index].Meal.Name" asp-for="@orderMeal.Meal.Name"/>*@                                 
                                 <label>
                                     @orderMeal.Meal.Name
                                 </label>

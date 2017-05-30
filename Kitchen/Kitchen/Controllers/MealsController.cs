@@ -4,6 +4,7 @@ using Kitchen.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -59,22 +60,17 @@ namespace Kitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Meal meal)
         {
-            if (meal.MealProducts != null)
+            if (meal.MealProducts == null)
             {
-                if (meal.MealProducts.Count > 0)
+                ModelState.AddModelError("", $"There is some problem.");
+            }
+            
+            foreach (var mealProduct in meal.MealProducts)
+            {
+                var product = mealProduct.Product;
+                if (_context.Products.Any(p => p.ProductName == product.ProductName))
                 {
-                    foreach (var mealProduct in meal.MealProducts)
-                    {
-                        var product = mealProduct.Product;
-                        if (!_context.Products.Any(p => p.ProductName == product.ProductName))
-                        {
-                            ModelState.AddModelError("ProductNotExist", $"\"There is no product with name {product.ProductName}\"");
-                        }
-                        else
-                        {
-                            mealProduct.Product = await _context.Products.SingleOrDefaultAsync(p => p.ProductName == product.ProductName);
-                        }
-                    }
+                    mealProduct.Product = await _context.Products.SingleOrDefaultAsync(p => p.ProductName == product.ProductName);
                 }
             }
 
@@ -97,6 +93,8 @@ namespace Kitchen.Controllers
 
             var meal = await _context.Meals
                 .Include(m => m.Category)
+                .Include(m => m.MealProducts)
+                    .ThenInclude(ml => ml.Product)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (meal == null)
             {
@@ -110,13 +108,17 @@ namespace Kitchen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,IsActive,Weight,CategoryId")] Meal meal)
+        public async Task<IActionResult> Edit(int id, Meal meal)
         {
             if (id != meal.Id)
             {
                 return NotFound();
             }
 
+            var notEmptyProducts = meal.MealProducts
+                .Where(ml => !string.IsNullOrEmpty(ml.Product.ProductName))
+                .ToList();
+            meal.MealProducts = notEmptyProducts;
             if (ModelState.IsValid)
             {
                 try
@@ -177,7 +179,7 @@ namespace Kitchen.Controllers
         {
             return View(index);
         }
-        
+
         // GET: Products/AvaiableProductsNames/
         [HttpGet]
         public async Task<JsonResult> AvaiableProductsNames()

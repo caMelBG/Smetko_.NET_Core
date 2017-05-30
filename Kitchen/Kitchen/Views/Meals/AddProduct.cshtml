@@ -10,22 +10,29 @@
         <label class="col-md-2 control-label">
             Product Name
         </label>
-        <div class="col-md-5">
+        <div class="col-md-4">
             <input name="MealProducts[@Model].Product.ProductName" class="form-control productName" />
         </div>
         <label class="col-md-1 control-label">
             Quantity
         </label>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <input name="MealProducts[@Model].Quantity" class="form-control" />
         </div>
+        <button type="button" class="delete-product btn btn-danger col-md-1 form-group">
+            Delete
+        </button>
     </div>
 </div>
 
 <script>
-    $.get("AvaiableProductsNames", function (data, status) {
+    $.get("/Meals/AvaiableProductsNames", function (data, status) {
         $(".productName").autocomplete({
             source: data
         });
+    });
+
+    $(".delete-product").on("click", function () {
+        $(this).parent().parent().empty();
     });
 </script>
