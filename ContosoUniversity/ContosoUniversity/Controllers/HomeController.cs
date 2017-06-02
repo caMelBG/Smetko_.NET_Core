@@ -1,10 +1,11 @@
-﻿using ContosoUniversity.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ContosoUniversity.Data;
 using ContosoUniversity.Models.SchoolViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Threading.Tasks;
 
 namespace ContosoUniversity.Controllers
 {
@@ -42,7 +43,11 @@ namespace ContosoUniversity.Controllers
                     {
                         while (await reader.ReadAsync())
                         {
-                            var row = new EnrollmentDateGroup { EnrollmentDate = reader.GetDateTime(0), StudentCount = reader.GetInt32(1) };
+                            var row = new EnrollmentDateGroup
+                            {
+                                EnrollmentDate = reader.GetDateTime(0),
+                                StudentCount = reader.GetInt32(1)
+                            };
                             groups.Add(row);
                         }
                     }

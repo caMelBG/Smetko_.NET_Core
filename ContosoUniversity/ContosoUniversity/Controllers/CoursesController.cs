@@ -1,10 +1,12 @@
-using ContosoUniversity.Data;
-using ContosoUniversity.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
+using ContosoUniversity.Data;
+using ContosoUniversity.Models;
 
 namespace ContosoUniversity.Controllers
 {
@@ -15,24 +17,6 @@ namespace ContosoUniversity.Controllers
         public CoursesController(SchoolContext context)
         {
             _context = context;
-        }
-
-        public IActionResult UpdateCourseCredits()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateCourseCredits(int? multiplier)
-        {
-            if (multiplier != null)
-            {
-                ViewData["RowsAffected"] =
-                    await _context.Database.ExecuteSqlCommandAsync(
-                        "UPDATE Course SET Credits = Credits * {0}",
-                        parameters: multiplier);
-            }
-            return View();
         }
 
         // GET: Courses
@@ -172,6 +156,25 @@ namespace ContosoUniversity.Controllers
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult UpdateCourseCredits()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCourseCredits(int? multiplier)
+        {
+            if (multiplier != null)
+            {
+                ViewData["RowsAffected"] =
+                    await _context.Database.ExecuteSqlCommandAsync(
+                        "UPDATE Course SET Credits = Credits * {0}",
+                        parameters: multiplier);
+            }
+            return View();
         }
 
         private bool CourseExists(int id)
